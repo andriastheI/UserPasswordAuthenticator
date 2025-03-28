@@ -1,3 +1,4 @@
 .idea/
 out/
-*.xml
+bin/
+.DS_Store
