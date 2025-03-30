@@ -1,14 +1,21 @@
 package UPA;
 
+import java.util.Arrays;
+
 public class UserPassAuth {
     private String username;
     private String password;
     UserPassAuth(){
     }
 
-    private String encryptPassword(String password){
-        //new code coming soon
-        return "";
+    private void encryptPassword(String password){
+        char[] letters = password.toCharArray();
+        char[] pass = new char[password.length()];
+        for(char letter : letters){
+            letter+=5;
+            pass[password.length()-1]=letter;
+        }
+        System.out.println(Arrays.toString(pass));
     }
 
 
@@ -16,6 +23,7 @@ public class UserPassAuth {
 
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        UserPassAuth auth = new UserPassAuth();
+        auth.encryptPassword("password");
     }
 }
