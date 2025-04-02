@@ -1,9 +1,6 @@
 package UPA;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 
 /**
  * the way I am going to implement the methods is not that complicated
@@ -17,12 +14,11 @@ import java.util.Random;
  *
  */
 public class UserPassAuth {
-    private String username;
     private String pwd;
-    private final Map<String,String>  storage = new HashMap<>();
+    private final Map<String, List<String>>  storage = new HashMap<>();
     private final String store = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:',.<>?/`~";
     private String key;
-    private Random rand = new Random();
+    private final Random rand = new Random();
     UserPassAuth(){
         loadUsers();
     }
@@ -30,7 +26,7 @@ public class UserPassAuth {
     private void loadUsers() {
     }
 
-    private void encryptPassword(String username, String password){
+    private String encryptPassword(String user, String password){
         key = "";
         for(int i = 0; i <= store.length(); i++){
             char letter = store.charAt(rand.nextInt(store.length()));
@@ -42,15 +38,37 @@ public class UserPassAuth {
             char let = key.charAt(ind);
             pwd += let;
         }
-        storage.put(username, key);
+
+        storage.put(user, List.of(key, pwd));
+        return pwd;
+    }
+    private String decryptPassword(String key, String password){
+        pwd= "";
+        for (char c : password.toCharArray()){
+            int ind = key.indexOf(c);
+            char let = store.charAt(ind);
+            pwd += let;
+        }
+        return pwd;
     }
 
+    private boolean checkPassword(String user, String password){
+        List<String> shop = storage.get(user);
+        if(shop == null){
+            return false;
+        }
+        String savedPass = decryptPassword(shop.getFirst(), shop.getLast());
 
+        return Objects.equals(savedPass, password);
+    }
 
+    private void runProgram(){
+        
+    }
 
 
     public static void main(String[] args) {
         UserPassAuth auth = new UserPassAuth();
-        auth.encryptPassword("ninja","password");
+
     }
 }
