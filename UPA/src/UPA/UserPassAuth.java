@@ -24,7 +24,7 @@ public class UserPassAuth {
 
     private void encryptPassword(String user, String password){
         key = "";
-        for(int i = 0; i < store.length(); i++){
+        for(int i = 0; i < store.length()+1; i++){
             char letter = store.charAt(rand.nextInt(store.length()));
             key += letter;
         }
@@ -68,8 +68,10 @@ public class UserPassAuth {
             if (storage.containsKey(user)){
                 System.out.println("Please enter your password to check: ");
                 String password = scanner.nextLine();
-                if(checkPassword(user, password)){
+                if(checkPassword(user, password.strip())){
                     System.out.println("Your password is correct");
+                }else{
+                    System.out.println("Your password is incorrect");
                 }
             } else{
                 System.out.println("User not found, Please enter your password: ");
@@ -82,7 +84,6 @@ public class UserPassAuth {
                 run = false;
             }
         }
-
     }
 
 
