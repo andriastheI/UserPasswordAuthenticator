@@ -16,19 +16,15 @@ import java.util.*;
 public class UserPassAuth {
     private String pwd;
     private final Map<String, List<String>>  storage = new HashMap<>();
-    private final String store = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:',.<>?/`~";
+    private final String store = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*";
     private String key;
     private final Random rand = new Random();
     UserPassAuth(){
-        loadUsers();
     }
 
-    private void loadUsers() {
-    }
-
-    private String encryptPassword(String user, String password){
+    private void encryptPassword(String user, String password){
         key = "";
-        for(int i = 0; i <= store.length(); i++){
+        for(int i = 0; i < store.length(); i++){
             char letter = store.charAt(rand.nextInt(store.length()));
             key += letter;
         }
@@ -38,17 +34,18 @@ public class UserPassAuth {
             char let = key.charAt(ind);
             pwd += let;
         }
+        System.out.println(pwd);
 
         storage.put(user, List.of(key, pwd));
-        return pwd;
     }
     private String decryptPassword(String key, String password){
         pwd= "";
-        for (char c : password.toCharArray()){
+        for (char c : password.toCharArray()) {
             int ind = key.indexOf(c);
             char let = store.charAt(ind);
             pwd += let;
         }
+        System.out.println(pwd);
         return pwd;
     }
 
@@ -63,12 +60,34 @@ public class UserPassAuth {
     }
 
     private void runProgram(){
-        
+        boolean run = true;
+        while(run){
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Please enter your username: ");
+            String user = scanner.nextLine();
+            if (storage.containsKey(user)){
+                System.out.println("Please enter your password to check: ");
+                String password = scanner.nextLine();
+                if(checkPassword(user, password)){
+                    System.out.println("Your password is correct");
+                }
+            } else{
+                System.out.println("User not found, Please enter your password: ");
+                String password = scanner.nextLine();
+                encryptPassword(user, password);
+            }
+            System.out.println("To check the password press (a) or (q) to quit: ");
+            String command = scanner.nextLine();
+            if(command.equals("q")){
+                run = false;
+            }
+        }
+
     }
 
 
     public static void main(String[] args) {
         UserPassAuth auth = new UserPassAuth();
-
+        auth.runProgram();
     }
 }
