@@ -1,4 +1,4 @@
-User-Name and Password Authenticator
+User Password Authenticator
 
 This is the first simple project.
 I am forcing myself to learn how to code in java with simple(mini) projects
